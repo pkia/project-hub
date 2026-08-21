@@ -23,6 +23,14 @@ PROJECTS = [
         "services": ["maritime-dashboard", "noaa-scheduler", "online-ships"],
     },
     {
+        "name": "CS2 Dashboard",
+        "port": 8001,
+        "desc": "Pro Counter-Strike match ticker: live scores, upcoming and "
+                "results from Liquipedia (kiosk app).",
+        "dir": "/home/ev/cs2-dashboard",
+        "services": ["cs2-dashboard"],
+    },
+    {
         "name": "AIS-catcher",
         "port": 8080,
         "desc": "Live AIS receiver map from the RTL-SDR dongle.",
@@ -65,6 +73,7 @@ SERVICES = [
     ("maritime-dashboard", "Maritime Dashboard"),
     ("noaa-scheduler", "Maritime Dashboard"),
     ("online-ships", "Maritime Dashboard"),
+    ("cs2-dashboard", "CS2 Dashboard"),
     ("ais-catcher", "AIS-catcher"),
     ("sdr-monitor", "AIS-catcher"),
     ("sat-audio", "Satellite Audio"),
