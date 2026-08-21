@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ host }} · Project Hub</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <span class="logo">⚓</span>
+            <div>
+                <h1>{{ host }} Project Hub</h1>
+                <p class="sub">Every project on this Pi, one page</p>
+            </div>
+        </div>
+        <div class="sysbar">
+            <span id="sys-time">--:--:--</span>
+            <span id="sys-uptime" class="muted"></span>
+            <span id="sys-temp"></span>
+            <span id="sys-disk" class="muted"></span>
+        </div>
+    </header>
+
+    <main>
+        <section id="cards" class="cards"></section>
+
+        <section class="panel">
+            <h2>System Services</h2>
+            <div id="services" class="services"></div>
+        </section>
+    </main>
+
+    <footer>
+        Refreshes every 10 s · <a href="/api/status">status API</a>
+    </footer>
+
+    <script src="/static/hub.js?v=2"></script>
+</body>
+</html>

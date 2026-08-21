@@ -1,0 +1,10 @@
+[Unit]
+Description=Project Hub pull-based deploy job
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ev
+WorkingDirectory=/home/ev/project-hub
+ExecStart=/home/ev/project-hub/deploy/deploy.sh
