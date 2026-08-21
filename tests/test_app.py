@@ -29,11 +29,12 @@ def test_projects_have_cards():
         assert {"name", "desc", "dir", "online", "services"} <= set(p)
 
 
-def test_ports_report_offline_on_ci():
-    # Port 8000 etc. are closed on a runner: must be False, not an error.
+def test_ports_report_bool_regardless_of_host():
+    # Whether ports are open depends on the host (Pi: live, CI: closed) -
+    # the contract is a clean boolean either way, never an error.
     projects = client.get("/api/status").get_json()["projects"]
     with_ports = [p for p in projects if p["port"]]
-    assert with_ports and all(p["online"] is False for p in with_ports)
+    assert with_ports and all(isinstance(p["online"], bool) for p in with_ports)
 
 
 def test_services_table():
