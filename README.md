@@ -24,7 +24,7 @@ the kiosk.
 flowchart LR
     subgraph dunbot[Pi host]
         APP[project-hub Flask app :8090]
-        APP -->|port probe| PORTS[Web UIs<br/>8000 / 8080 / 8085 / 3001]
+        APP -->|port probe| PORTS[Web UIs<br/>8000 / 8001 / 8080 / 8085 / 3001 / 8091]
         APP -->|is-active| SYSTEMD[systemd units<br/>AIS, NOAA, DNS, kiosk]
     end
     BROWSER[any browser on the LAN] --> APP

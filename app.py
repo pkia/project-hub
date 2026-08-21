@@ -31,6 +31,14 @@ PROJECTS = [
         "services": ["cs2-dashboard"],
     },
     {
+        "name": "Kiosk Home",
+        "port": 8091,
+        "desc": "The chooser screen the kiosk opens on boot — big touch "
+                "cards for each dashboard.",
+        "dir": "/home/ev/kiosk-home",
+        "services": ["kiosk-home"],
+    },
+    {
         "name": "AIS-catcher",
         "port": 8080,
         "desc": "Live AIS receiver map from the RTL-SDR dongle.",
@@ -74,6 +82,7 @@ SERVICES = [
     ("noaa-scheduler", "Maritime Dashboard"),
     ("online-ships", "Maritime Dashboard"),
     ("cs2-dashboard", "CS2 Dashboard"),
+    ("kiosk-home", "Kiosk Home"),
     ("ais-catcher", "AIS-catcher"),
     ("sdr-monitor", "AIS-catcher"),
     ("sat-audio", "Satellite Audio"),
