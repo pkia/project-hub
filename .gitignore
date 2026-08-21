@@ -5,8 +5,10 @@ venv/
 __pycache__/
 *.pyc
 
-# Deploy log (pull-based CD writes here)
+# Deploy log and state (pull-based CD writes here)
 *.log
+.deployed_commit
+.deploy_failed
 
 # OS
 .DS_Store
