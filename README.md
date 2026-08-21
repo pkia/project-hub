@@ -1,6 +1,6 @@
 # Project Hub
 
-![CI](https://github.com/GH_USER/project-hub/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/pkia/project-hub/actions/workflows/ci.yml/badge.svg)
 
 A single-page operations portal for the services running on my Raspberry Pi
 host `dunbot`. Every web UI and systemd unit on the box is reachable and
