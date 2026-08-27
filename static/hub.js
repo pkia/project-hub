@@ -60,6 +60,36 @@ function renderServices(services) {
         </div>`).join("");
 }
 
+async function fetchProbes() {
+    try {
+        const r = await fetch("/api/probes");
+        return await r.json();
+    } catch (e) {
+        return null;
+    }
+}
+
+function renderProbes(data) {
+    const panel = document.getElementById("probes-panel");
+    const entries = Object.entries((data && data.probes) || {});
+    if (!entries.length) { panel.hidden = true; return; }
+    panel.hidden = false;
+    document.getElementById("probes").innerHTML = entries.map(([name, p]) => {
+        const lat = p.status === "up" && p.latency_ms != null
+            ? ` <span class="muted">${p.latency_ms} ms</span>` : "";
+        const err = p.error
+            ? ` <span class="muted" title="${esc(p.error)}">·</span>` : "";
+        return `
+        <div class="svc">
+            ${dot(p.status === "up")}
+            <span class="name">${esc(name)}</span>
+            <span class="group">${esc(p.kind)}${lat}${err}</span>
+        </div>`;
+    }).join("");
+    const gen = data.generated ? `· swept ${esc(data.generated)}Z`.replace("T", " ") : "";
+    document.getElementById("probes-age").textContent = gen;
+}
+
 function renderSys(s) {
     document.getElementById("sys-time").textContent = s.time;
     document.getElementById("sys-uptime").textContent = "up " + s.uptime;
@@ -76,6 +106,7 @@ async function refresh() {
     renderSys(s);
     renderProjects(s.projects);
     renderServices(s.services);
+    renderProbes(await fetchProbes());
 }
 
 refresh();

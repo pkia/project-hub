@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Project Hub - one-page portal to every project and web UI on dunbot."""
+import json
 import socket
 import subprocess
 import time
+from pathlib import Path
 
 from flask import Flask, jsonify, render_template
 
@@ -127,6 +129,20 @@ def read_temp():
 @app.route("/")
 def index():
     return render_template("index.html", host=HOST)
+
+
+# service-probe (pi-cicd) writes this every 5 minutes; absent on a fresh
+# install or CI, in which case the scoreboard panel simply hides itself.
+PROBE_STATUS = Path.home() / ".local/state/service-probe/status.json"
+
+
+@app.route("/api/probes")
+def api_probes():
+    try:
+        data = json.loads(PROBE_STATUS.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return jsonify({"probes": {}})
+    return jsonify(data)
 
 
 @app.route("/api/status")
