@@ -135,6 +135,10 @@ def index():
 # install or CI, in which case the scoreboard panel simply hides itself.
 PROBE_STATUS = Path.home() / ".local/state/service-probe/status.json"
 
+# chaos-drill (pi-cicd) writes this nightly at 04:45; absent on a fresh
+# install or CI, in which case the chaos panel hides itself the same way.
+CHAOS_STATUS = Path.home() / ".local/state/chaos-drill/status.json"
+
 
 @app.route("/api/probes")
 def api_probes():
@@ -142,6 +146,15 @@ def api_probes():
         data = json.loads(PROBE_STATUS.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return jsonify({"probes": {}})
+    return jsonify(data)
+
+
+@app.route("/api/chaos")
+def api_chaos():
+    try:
+        data = json.loads(CHAOS_STATUS.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return jsonify({"drills": {}})
     return jsonify(data)
 
 

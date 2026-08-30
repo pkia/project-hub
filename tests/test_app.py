@@ -62,3 +62,26 @@ def test_api_probes_serves_status_json(tmp_path, monkeypatch):
     (tmp_path / "status.json").write_text(_json.dumps(status))
     data = client.get("/api/probes").get_json()
     assert data["probes"]["portal"]["status"] == "up"
+
+
+def test_api_chaos_endpoint_exists():
+    r = client.get("/api/chaos")
+    assert r.status_code == 200
+    data = r.get_json()
+    assert "drills" in data
+    # absent on CI (no chaos-drill state there) -> empty, not an error
+    assert isinstance(data["drills"], dict)
+
+
+def test_api_chaos_serves_status_json(tmp_path, monkeypatch):
+    import json as _json
+    status = {"generated": "2026-08-30T04:45:00+00:00",
+              "last_run": "2026-08-30T04:45:00+00:00",
+              "drills": {"ntfy-auth": {"result": "pass",
+                                       "detail": "denied+accepted",
+                                       "at": "2026-08-30T04:45:05+00:00"}}}
+    monkeypatch.setattr(hub, "CHAOS_STATUS", tmp_path / "status.json")
+    (tmp_path / "status.json").write_text(_json.dumps(status))
+    data = client.get("/api/chaos").get_json()
+    assert data["drills"]["ntfy-auth"]["result"] == "pass"
+    assert data["last_run"].startswith("2026-08-30")

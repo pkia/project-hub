@@ -69,6 +69,15 @@ async function fetchProbes() {
     }
 }
 
+async function fetchChaos() {
+    try {
+        const r = await fetch("/api/chaos");
+        return await r.json();
+    } catch (e) {
+        return null;
+    }
+}
+
 function renderProbes(data) {
     const panel = document.getElementById("probes-panel");
     const entries = Object.entries((data && data.probes) || {});
@@ -90,6 +99,28 @@ function renderProbes(data) {
     document.getElementById("probes-age").textContent = gen;
 }
 
+function renderChaos(data) {
+    const panel = document.getElementById("chaos-panel");
+    const entries = Object.entries((data && data.drills) || {});
+    if (!entries.length) { panel.hidden = true; return; }
+    panel.hidden = false;
+    document.getElementById("chaos").innerHTML = entries.map(([name, d]) => {
+        const ok = d.result === "pass";
+        const cls = ok ? "on" : d.result === "skip" ? "na" : "off";
+        const at = d.at ? ` <span class="muted">${esc(d.at)}Z</span>`.replace("T", " ") : "";
+        const note = d.detail
+            ? ` <span class="muted" title="${esc(d.detail)}">${esc(d.result)}</span>` : "";
+        return `
+        <div class="svc">
+            <span class="dot ${cls}" title="${esc(d.result)}"></span>
+            <span class="name">${esc(name)}</span>
+            <span class="group">${at}${note}</span>
+        </div>`;
+    }).join("");
+    const gen = data.last_run ? `· drilled ${esc(data.last_run)}Z`.replace("T", " ") : "";
+    document.getElementById("chaos-age").textContent = gen;
+}
+
 function renderSys(s) {
     document.getElementById("sys-time").textContent = s.time;
     document.getElementById("sys-uptime").textContent = "up " + s.uptime;
@@ -107,6 +138,7 @@ async function refresh() {
     renderProjects(s.projects);
     renderServices(s.services);
     renderProbes(await fetchProbes());
+    renderChaos(await fetchChaos());
 }
 
 refresh();
