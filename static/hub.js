@@ -78,6 +78,15 @@ async function fetchChaos() {
     }
 }
 
+async function fetchHeals() {
+    try {
+        const r = await fetch("/api/heals");
+        return await r.json();
+    } catch (e) {
+        return null;
+    }
+}
+
 function renderProbes(data) {
     const panel = document.getElementById("probes-panel");
     const entries = Object.entries((data && data.probes) || {});
@@ -121,6 +130,27 @@ function renderChaos(data) {
     document.getElementById("chaos-age").textContent = gen;
 }
 
+function renderHeals(data) {
+    const panel = document.getElementById("heals-panel");
+    const heals = (data && Array.isArray(data.heals)) ? data.heals : [];
+    if (!heals.length) { panel.hidden = true; return; }
+    panel.hidden = false;
+    document.getElementById("heals").innerHTML = heals.slice(-8).reverse().map(h => {
+        const at = h.ts ? ` <span class="muted">${esc(h.ts)}</span>`.replace("T", " ") : "";
+        const what = h.what ? esc(h.what.replace(/-/g, " ")) : "heal";
+        const detail = h.detail
+            ? ` <span class="muted" title="${esc(h.detail)}">${esc(h.detail)}</span>` : "";
+        return `
+        <div class="svc">
+            <span class="dot on" title="self-healed"></span>
+            <span class="name">${what}</span>
+            <span class="group">${at}${detail}</span>
+        </div>`;
+    }).join("");
+    const gen = data.updated ? `· healed ${esc(data.updated)}Z`.replace("T", " ") : "";
+    document.getElementById("heals-age").textContent = gen;
+}
+
 function renderSys(s) {
     document.getElementById("sys-time").textContent = s.time;
     document.getElementById("sys-uptime").textContent = "up " + s.uptime;
@@ -139,6 +169,7 @@ async function refresh() {
     renderServices(s.services);
     renderProbes(await fetchProbes());
     renderChaos(await fetchChaos());
+    renderHeals(await fetchHeals());
 }
 
 refresh();

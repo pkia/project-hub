@@ -139,6 +139,10 @@ PROBE_STATUS = Path.home() / ".local/state/service-probe/status.json"
 # install or CI, in which case the chaos panel hides itself the same way.
 CHAOS_STATUS = Path.home() / ".local/state/chaos-drill/status.json"
 
+# pipeline-check (pi-cicd) appends every self-heal here; absent on a fresh
+# install or CI, in which case the Self-healing panel hides itself.
+HEALS_STATUS = Path.home() / ".local/state/pipeline-check/status.json"
+
 
 @app.route("/api/probes")
 def api_probes():
@@ -155,6 +159,15 @@ def api_chaos():
         data = json.loads(CHAOS_STATUS.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return jsonify({"drills": {}})
+    return jsonify(data)
+
+
+@app.route("/api/heals")
+def api_heals():
+    try:
+        data = json.loads(HEALS_STATUS.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return jsonify({"heals": []})
     return jsonify(data)
 
 
