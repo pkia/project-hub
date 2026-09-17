@@ -25,14 +25,6 @@ PROJECTS = [
         "services": ["maritime-dashboard", "noaa-scheduler", "online-ships"],
     },
     {
-        "name": "CS2 Dashboard",
-        "port": 8001,
-        "desc": "Pro Counter-Strike match ticker: live scores, upcoming and "
-                "results from Liquipedia (kiosk app).",
-        "dir": "/home/ev/cs2-dashboard",
-        "services": ["cs2-dashboard"],
-    },
-    {
         "name": "Kiosk Home",
         "port": 8091,
         "desc": "The chooser screen the kiosk opens on boot — big touch "
@@ -83,7 +75,6 @@ SERVICES = [
     ("maritime-dashboard", "Maritime Dashboard"),
     ("noaa-scheduler", "Maritime Dashboard"),
     ("online-ships", "Maritime Dashboard"),
-    ("cs2-dashboard", "CS2 Dashboard"),
     ("kiosk-home", "Kiosk Home"),
     ("ais-catcher", "AIS-catcher"),
     ("sdr-monitor", "AIS-catcher"),

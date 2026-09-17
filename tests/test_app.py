@@ -73,6 +73,20 @@ def test_api_chaos_endpoint_exists():
     assert isinstance(data["drills"], dict)
 
 
+RETIRED_UNITS = {"cs2-dashboard", "cs2-tracker", "mark-site"}
+
+
+def test_registry_lists_no_retired_service():
+    """The portal registry is the map of what exists on this box.
+
+    cs2-dashboard, cs2-tracker and mark-site were retired 2026-09-15 (units
+    and deploy timers disabled, code kept). A stale registry row is a card
+    and a status row for a service that will never come back.
+    """
+    assert not RETIRED_UNITS & {svc for svc, _ in hub.SERVICES}
+    assert not RETIRED_UNITS & {svc for p in hub.PROJECTS for svc in p["services"]}
+
+
 def test_api_chaos_serves_status_json(tmp_path, monkeypatch):
     import json as _json
     status = {"generated": "2026-08-30T04:45:00+00:00",
